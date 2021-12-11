@@ -156,7 +156,6 @@ class ProductCategory:
         exportedItems = []
         for x in self.ITEMS:
             exportedItems.append(x.export())
-        print(exportedItems)
         return {self.NAME:exportedItems}   
 
     def textExport(self):
@@ -212,7 +211,7 @@ class SupplyDatabseObject:
         if index != False or index == 0:
             self.CATEGORYS.pop(index)
 
-    def deleteProduct(self, productName, categoryName):
+    def deleteSupply(self, productName, categoryName):
         index = self.categoryIndex(categoryName)
         if index != False or index == 0:
             self.CATEGORYS[index].removeItem(productName)
@@ -242,6 +241,13 @@ class SupplyDatabseObject:
         for x in self.CATEGORYS:
             tempText += x.textExport()
         return tempText
+
+    def getAllProductNames(self):
+        names = []
+        for x in self.CATEGORYS:
+            for y in self.getProductNames(x.NAME):
+                names.append(f'{y}|{x.NAME}') #y = productname x.NAME = category name
+        return names
 
     
 
@@ -288,7 +294,7 @@ class ProductDatabaseObject:
     
     def deleteCategory(self, name):
         index = self.categoryIndex(name)
-        if index != False:
+        if index != False or index == 0:
             self.CATEGORYS.pop(index)
 
     def deleteProduct(self, productName, categoryName):
@@ -319,6 +325,13 @@ class ProductDatabaseObject:
         for x in self.CATEGORYS:
             tempText += x.textExport()
         return tempText
+
+    def getAllProductNames(self):
+        names = []
+        for x in self.CATEGORYS:
+            for y in self.getProductNames(x.NAME):
+                names.append(f'{y}|{x.NAME}') #y = productname x.NAME = category name
+        return names
 
 
         

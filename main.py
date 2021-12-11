@@ -11,12 +11,13 @@ productDb.refresh()
 supplyDb.refresh()
 
 window = Tk()
-window.geometry("400x400")
+window.geometry("200x500")
 window.resizable(False, False)
 
 def addProductPopup():
     curPopUp = Tk()
-    curPopUp.geometry("250x350")
+    curPopUp.geometry("250x250")
+    curPopUp.title("Add Product")
     curPopUp.resizable(False, False)
 
     addProductTitle = Label(curPopUp, text="Add Product")
@@ -57,7 +58,7 @@ def addProductPopup():
         "SELLPRICE":float(sellPriceFieldEntry.get()),
         "MAKEPRICE":float(makePriceFieldEntry.get()),
         "DESC":None
-    }, n.get()), productDb.updateDb(), print(n.get()), curPopUp.destroy()])
+    }, n.get()), productDb.updateDb(), curPopUp.destroy()])
     submitBtn.place(x=10, y=210)
 
 
@@ -66,9 +67,10 @@ def addProductPopup():
 def addProductCategoryPopup():
     curPopUp = Tk()
     curPopUp.geometry("200x150")
+    curPopUp.title("App")
     curPopUp.resizable(False, False)
 
-    addCategoryTitle = Label(curPopUp, text="Add Category")
+    addCategoryTitle = Label(curPopUp, text="Add Product Category")
     addCategoryTitle.place(x=10, y=10)
 
     nameFieldLbl = Label(curPopUp, text="Name:")
@@ -92,7 +94,8 @@ def makeSupplyRecord():
 
 def addSupplyPopup():
     curPopUp = Tk()
-    curPopUp.geometry("250x350")
+    curPopUp.geometry("250x200")
+    curPopUp.title("Add Supply")
     curPopUp.resizable(False, False)
 
     addProductTitle = Label(curPopUp, text="Add Supply")
@@ -115,12 +118,12 @@ def addSupplyPopup():
 
 
     categoryChosenLbl = Label(curPopUp, text="Category:")
-    categoryChosenLbl.place(x=10, y=180)
+    categoryChosenLbl.place(x=10, y=150)
     n = StringVar(curPopUp)
     n.set(" select ")
     
     categoryChosen = OptionMenu(curPopUp, n, *supplyDb.getCategoryNames())
-    categoryChosen.place(x=80, y=180)
+    categoryChosen.place(x=80, y=150)
     
 
     submitBtn = Button(curPopUp, text="Add Product", width=10, height=1, command=lambda:[makeSupplyRecord(), supplyDb.addSupply({
@@ -128,7 +131,7 @@ def addSupplyPopup():
         "AMO":int(amoFieldEntry.get()),
         "PRICE":float(PriceFieldEntry.get()),
         "DESC":None
-    }, n.get()), supplyDb.updateDb(), print(n.get()), curPopUp.destroy()])
+    }, n.get()), supplyDb.updateDb(), curPopUp.destroy()])
     submitBtn.place(x=10, y=210)
 
 
@@ -137,9 +140,10 @@ def addSupplyPopup():
 def addSupplyCategory():
     curPopUp = Tk()
     curPopUp.geometry("200x150")
+    curPopUp.title("App")
     curPopUp.resizable(False, False)
 
-    addCategoryTitle = Label(curPopUp, text="Add Category")
+    addCategoryTitle = Label(curPopUp, text="Add Supply Category")
     addCategoryTitle.place(x=10, y=10)
 
     nameFieldLbl = Label(curPopUp, text="Name:")
@@ -151,29 +155,153 @@ def addSupplyCategory():
     subminBtn.place(x=10, y=110)
     curPopUp.mainloop()  
 
+def delProductPopup():
+    curPopUp = Tk()
+    curPopUp.geometry("200x150")
+    curPopUp.title("App")
+    curPopUp.resizable(False, False) 
+
+    delProductTitle = Label(curPopUp, text="Del Product")
+    delProductTitle.place(x=10, y=10)
+
+    categoryChosenLbl = Label(curPopUp, text="Product:")
+    categoryChosenLbl.place(x=10, y=50)
+    n = StringVar(curPopUp)
+    n.set(" select ")
+    
+    categoryChosen = OptionMenu(curPopUp, n, *productDb.getAllProductNames())
+    categoryChosen.place(x=70, y=50)
+
+    submitBtn = Button(curPopUp, text="Del Product", command=lambda:[productDb.deleteProduct(n.get().split("|")[0], n.get().split("|")[1]), productDb.updateDb(), makeProductRecord(), curPopUp.destroy()])
+    submitBtn.place(x=10, y=90)
+
+    curPopUp.mainloop()
+
+def delSupplyPopup():
+    curPopUp = Tk()
+    curPopUp.geometry("200x150")
+    curPopUp.title("App")
+    curPopUp.resizable(False, False) 
+
+    delProductTitle = Label(curPopUp, text="Del Supply")
+    delProductTitle.place(x=10, y=10)
+
+    categoryChosenLbl = Label(curPopUp, text="Supply:")
+    categoryChosenLbl.place(x=10, y=50)
+    n = StringVar(curPopUp)
+    n.set(" select ")
+    
+    categoryChosen = OptionMenu(curPopUp, n, *supplyDb.getAllProductNames())
+
+    submitBtn = Button(curPopUp, text="Del Supply", command=lambda:[supplyDb.deleteSupply(n.get().split("|")[0], n.get().split("|")[1]), supplyDb.updateDb(), makeSupplyRecord(), curPopUp.destroy()])
+    submitBtn.place(x=10, y=90)
+
+    categoryChosen.place(x=70, y=50)      
+
+def delProductCategory():
+    curPopUp = Tk()
+    curPopUp.title("App")
+    curPopUp.geometry("200x150")
+    curPopUp.resizable(False, False)
+
+    delCategoryTitle = Label(curPopUp, text="Delete Product Category")
+    delCategoryTitle.place(x=10, y=10)
+
+    categoryChosenLbl = Label(curPopUp, text="Category:")
+    categoryChosenLbl.place(x=10, y=50)
+    n = StringVar(curPopUp)
+    n.set(" select ")
+    if productDb.getCategoryNames() != []:
+        categoryChosen = OptionMenu(curPopUp, n, *productDb.getCategoryNames())
+        categoryChosen.place(x=70, y=45)
+
+        subminBtn = Button(curPopUp, text="Del Product Category", command=lambda:[productDb.deleteCategory(n.get()), productDb.updateDb(), makeProductRecord(), curPopUp.destroy()])
+        subminBtn.place(x=10, y=90)
+
+        curPopUp.mainloop()    
+    else:
+        noneLbl = Label(curPopUp, text="No Categorys")
+        noneLbl.place(x=70, y=50)
+        curPopUp.mainloop()
+        
     
 
-    
+def delSupplyCategory():
+    curPopUp = Tk()
+    curPopUp.title("App")
+    curPopUp.geometry("200x150")
+    curPopUp.resizable(False, False)
 
+    delCategoryTitle = Label(curPopUp, text="Delete Supply Category")
+    delCategoryTitle.place(x=10, y=10)
+
+    categoryChosenLbl = Label(curPopUp, text="Category:")
+    categoryChosenLbl.place(x=10, y=50)
+    n = StringVar(curPopUp)
+    n.set(" select ")
+    if productDb.getCategoryNames() != []:
+        categoryChosen = OptionMenu(curPopUp, n, *supplyDb.getCategoryNames())
+        categoryChosen.place(x=70, y=45)
+
+        subminBtn = Button(curPopUp, text="Del Product Category", command=lambda:[supplyDb.deleteCategory(n.get()), supplyDb.updateDb(), makeSupplyRecord(), curPopUp.destroy()])
+        subminBtn.place(x=10, y=90)
+
+    else:
+        noneLbl = Label(curPopUp, text="No Categorys")
+        noneLbl.place(x=70, y=50)
+        curPopUp.mainloop()
+
+    curPopUp.mainloop()
+
+#starting template   
+#curPopUp = Tk()
+#curPopUp.title()
+#curPopUp.geometry("")
+#curPopUp.resizable(False, False)
+#curPopUp.mainloop()
 
 
 mainTitleLabel = Label(window, text="Product Inventory App")
 mainTitleLabel.place(x=10, y=10)
+window.title("App")
+BTNWIDTH = 10
+BTNHEIGHT= 5
 
-addProductBtn = Button(window, text="Add\nProduct", command=addProductPopup)
-addProductBtn.place(x=10, y=100)
+COL1X = 10
+COL2X = 110
 
-addProductCategoryBtn = Button(window, text="Add\nProduct\nCategory", command=addProductCategoryPopup)
-addProductCategoryBtn.place(x=10, y=190)
+ROW1Y=100
+ROW2Y=200
+ROW3Y=300
+ROW4Y=400
 
+#column 1
 
+addProductBtn = Button(window, text="Add\nProduct", command=addProductPopup, height=BTNHEIGHT, width=BTNWIDTH)
+addProductBtn.place(x=COL1X, y=ROW1Y)
 
+addProductCategoryBtn = Button(window, text="Add\nProduct\nCategory", command=addProductCategoryPopup, height=BTNHEIGHT, width=BTNWIDTH)
+addProductCategoryBtn.place(x=COL1X, y=ROW2Y)
 
-addSupplybtn = Button(window, text="Add\nSupply", command=addSupplyPopup)
-addSupplybtn.place(x=110, y=100)
+delProductBtn = Button(window, text="Delete\nProduct", command=delProductPopup, height=BTNHEIGHT, width=BTNWIDTH)
+delProductBtn.place(x=COL1X, y=ROW3Y)
 
-addSupplyCategoryBtn = Button(window, text="Add\nSupply\nCategory", command=addSupplyCategory)
-addSupplyCategoryBtn.place(x=110, y=190)
+delProductCategoryBtn = Button(window, text="Delete\nProduct\nCategory", height=BTNHEIGHT, width=BTNWIDTH, command=delProductCategory)
+delProductCategoryBtn.place(x=COL1X, y=ROW4Y)
+
+#column 2
+
+addSupplybtn = Button(window, text="Add\nSupply", command=addSupplyPopup, height=BTNHEIGHT, width=BTNWIDTH)
+addSupplybtn.place(x=COL2X, y=ROW1Y)
+
+addSupplyCategoryBtn = Button(window, text="Add\nSupply\nCategory", command=addSupplyCategory, height=BTNHEIGHT, width=BTNWIDTH)
+addSupplyCategoryBtn.place(x=COL2X, y=ROW2Y)
+
+delSupplyBtn = Button(window, text="Delete\nSupply", command=delSupplyPopup, height=BTNHEIGHT, width=BTNWIDTH)
+delSupplyBtn.place(x=COL2X, y=ROW3Y)
+
+delSupplyCategoryBtn = Button(window, text="Delete\nSupply\nCategory", height=BTNHEIGHT, width=BTNWIDTH, command=delSupplyCategory)
+delSupplyCategoryBtn.place(x=COL2X, y=ROW4Y)
 
 
 window.mainloop()
