@@ -1,0 +1,6 @@
+CATEGORY: Candles 
+ NAME: test | AMO: 5 | SELLPRICE: 20.0 | MAKEPRICE: 10.0 
+
+CATEGORY: waxMelts 
+ NAME: black promogranite | AMO: 20 | SELLPRICE: 10.0 | MAKEPRICE: 5.0 
+

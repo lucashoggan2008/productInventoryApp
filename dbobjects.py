@@ -16,6 +16,10 @@ class Product:
             "MAKEPRICE":self.MAKEPRICE,
             "DESC":self.DESC
         }
+    
+    def textExport(self):
+        return f' NAME: {self.NAME} | AMO: {self.AMO} | SELLPRICE: {self.SELLPRICE} | MAKEPRICE: {self.MAKEPRICE} \n'
+    
 
 class Supply:
     def __init__(self, DATA):
@@ -31,6 +35,9 @@ class Supply:
             "PRICE":self.PRICE,
             "DESC":self.DESC
         }
+    
+    def textExport(self):
+        return f"NAME: {self.NAME} | AMO: {self.AMO} | PRICE: {self.PRICE} \n"
 
 class SupplyCategory:
     def __init__(self, NAME, DATA):
@@ -87,6 +94,13 @@ class SupplyCategory:
             exportedItems.append(x.export())
         return {self.NAME:exportedItems}   
 
+    def textExport(self):
+        tempText = f"CATEGORY: {self.NAME} \n"
+        for x in self.ITEMS:
+            tempText += x.textExport()
+        tempText += "\n"
+        return tempText
+
 class ProductCategory:
     def __init__(self, NAME, DATA):
         self.NAME = NAME
@@ -142,7 +156,15 @@ class ProductCategory:
         exportedItems = []
         for x in self.ITEMS:
             exportedItems.append(x.export())
+        print(exportedItems)
         return {self.NAME:exportedItems}   
+
+    def textExport(self):
+        tempText = f"CATEGORY: {self.NAME} \n"
+        for x in self.ITEMS:
+            tempText += x.textExport()
+        tempText += "\n"
+        return tempText
 
 class SupplyDatabseObject:
     def __init__(self):
@@ -182,28 +204,28 @@ class SupplyDatabseObject:
 
     def addSupply(self, supplyData, categoryName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             self.CATEGORYS[index].addItem(supplyData)
     
     def deleteCategory(self, name):
         index = self.categoryIndex(name)
-        if index != False:
+        if index != False or index == 0:
             self.CATEGORYS.pop(index)
 
     def deleteProduct(self, productName, categoryName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             self.CATEGORYS[index].removeItem(productName)
     
     def getProductNames(self, categoryName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             return self.CATEGORYS[index].getItemNames()
         return False
 
     def getProduct(self, categoryName, productName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             return self.CATEGORYS[index].getItem(productName)
         return False
     
@@ -212,6 +234,15 @@ class SupplyDatabseObject:
         for x in self.CATEGORYS:
             tempNameList.append(x.NAME)
         return tempNameList
+
+    
+
+    def exportText(self):
+        tempText = ""
+        for x in self.CATEGORYS:
+            tempText += x.textExport()
+        return tempText
+
     
 
 class ProductDatabaseObject:
@@ -252,7 +283,7 @@ class ProductDatabaseObject:
 
     def addProduct(self, productData, categoryName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             self.CATEGORYS[index].addItem(productData)
     
     def deleteCategory(self, name):
@@ -262,18 +293,18 @@ class ProductDatabaseObject:
 
     def deleteProduct(self, productName, categoryName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             self.CATEGORYS[index].removeItem(productName)
     
     def getProductNames(self, categoryName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             return self.CATEGORYS[index].getItemNames()
         return False
 
     def getProduct(self, categoryName, productName):
         index = self.categoryIndex(categoryName)
-        if index != False:
+        if index != False or index == 0:
             return self.CATEGORYS[index].getItem(productName)
         return False
     
@@ -282,6 +313,14 @@ class ProductDatabaseObject:
         for x in self.CATEGORYS:
             tempNameList.append(x.NAME)
         return tempNameList
+
+    def exportText(self):
+        tempText = ""
+        for x in self.CATEGORYS:
+            tempText += x.textExport()
+        return tempText
+
+
         
 
 
