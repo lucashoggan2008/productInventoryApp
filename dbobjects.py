@@ -249,6 +249,11 @@ class SupplyDatabseObject:
                 names.append(f'{y}|{x.NAME}') #y = productname x.NAME = category name
         return names
 
+    def changeItemAmo(self, categoryName, productName, mode, amo):
+        categoryIndex = self.categoryIndex(categoryName)
+        if categoryIndex != False or categoryIndex == 0:
+            self.CATEGORYS[categoryIndex].changeItemAmo(productName, mode, amo)
+
     
 
 class ProductDatabaseObject:
@@ -332,6 +337,12 @@ class ProductDatabaseObject:
             for y in self.getProductNames(x.NAME):
                 names.append(f'{y}|{x.NAME}') #y = productname x.NAME = category name
         return names
+
+    def changeItemAmo(self, categoryName, productName, mode, amo):
+        categoryIndex = self.categoryIndex(categoryName)
+        if categoryIndex != False or categoryIndex == 0:
+            self.CATEGORYS[categoryIndex].changeItemAmo(productName, mode, amo)
+
 
 
         
